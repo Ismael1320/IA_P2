@@ -21,15 +21,15 @@ def bfs_camino(grafo, inicio, objetivo):
 
     return None
 
-if __name__ == "__main__" :
-    grafo = {
-        'A': ['B', 'C'],
-        'B': ['D', 'E'],
-        'C': ['F'],
-        'D': [],
-        'E': ['F'],
-        'F': []
-    }
 
-    print("Camino más corto de A a F: ")
-    print(bfs_camino(grafo, 'A', 'F'))
+grafo = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': ['F'],
+    'F': []
+}
+
+print("Camino más corto de A a F: ")
+print(bfs_camino(grafo, 'A', 'F'))

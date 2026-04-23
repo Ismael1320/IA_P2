@@ -22,21 +22,21 @@ def costo_uniforme(grafo, inicio, objetivo):
 
     return None
 
-if __name__ == "__main__" :
-    grafo = {
-        'A': [('B', 1), ('C', 4)],
-        'B': [('D', 2), ('E', 5)],
-        'C': [('F', 1)],
-        'D': [],
-        'E': [],
-        'F': []
-    }
 
-    resultado = costo_uniforme(grafo, 'A', 'F')
+grafo = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('D', 2), ('E', 5)],
+    'C': [('F', 1)],
+    'D': [],
+    'E': [],
+    'F': []
+}
 
-    if resultado:
+resultado = costo_uniforme(grafo, 'A', 'F')
+
+if resultado:
         costo, camino = resultado
         print("Costo minímo: ", costo)
         print("Camino:", " ".join(camino))
-    else:
+else:
         print("No se encontro camino")
