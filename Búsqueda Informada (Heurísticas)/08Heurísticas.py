@@ -22,7 +22,7 @@ def a_star(grafo, inicio, objetivo, heuristica):
 
             if vecino not in costo or nuevo_costo < costo[vecino]:
                 costo[vecino] = nuevo_costo
-                # ✔ CORRECTO: heurística como número
+               
                 prioridad = nuevo_costo + heuristica[vecino]
                 heapq.heappush(cola, (prioridad, vecino))
                 camino[vecino] = actual
@@ -30,8 +30,8 @@ def a_star(grafo, inicio, objetivo, heuristica):
     return None
 
 
-if __name__ == "__main__":
-    grafo = {
+
+grafo = {
         'A': [('B', 1), ('C', 4)],
         'B': [('D', 2), ('E', 5)],
         'C': [('F', 3)],
@@ -40,8 +40,8 @@ if __name__ == "__main__":
         'F': []
     }
 
-    # ✔ Heurística simple (VALORES NUMÉRICOS)
-    heuristica = {
+
+heuristica = {
         'A': 5,
         'B': 3,
         'C': 4,
@@ -50,13 +50,13 @@ if __name__ == "__main__":
         'F': 0
     }
 
-    print("Nodos disponibles:", list(grafo.keys()))
-    inicio = input("Nodo inicial: ").upper()
-    objetivo = input("Nodo objetivo: ").upper()
+print("Nodos disponibles:", list(grafo.keys()))
+inicio = input("Nodo inicial: ").upper()
+objetivo = input("Nodo objetivo: ").upper()
 
-    resultado = a_star(grafo, inicio, objetivo, heuristica)
+resultado = a_star(grafo, inicio, objetivo, heuristica)
 
-    if resultado:
+if resultado:
         print("Camino encontrado:", " -> ".join(resultado))
-    else:
+else:
         print("No hay camino")
