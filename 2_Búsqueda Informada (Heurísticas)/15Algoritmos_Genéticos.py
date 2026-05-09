@@ -1,49 +1,103 @@
 import random
 
+# Calcular fitness del individuo
 def fitness(individuo):
+
+    # Sumar los valores del individuo
     return sum(individuo)
 
-def crear_individuo(tamano):
-    return[random.randint(0, 1) for _ in range(tamano)]
 
-def cruce(padre1, paddre2):
+# Crear individuo aleatorio
+def crear_individuo(tamano):
+
+    return [random.randint(0, 1) for _ in range(tamano)]
+
+
+# Realizar cruce entre dos padres
+def cruce(padre1, padre2):
+
+    # Elegir punto de cruce
     punto = random.randint(1, len(padre1) - 1)
-    hijo = padre1[:punto] + paddre2[punto:]
+
+    # Crear hijo combinando ambos padres
+    hijo = padre1[:punto] + padre2[punto:]
+
     return hijo
 
-def mutuacion(individuo, prob=0.1):
+
+# Aplicar mutación al individuo
+def mutacion(individuo, prob=0.1):
+
+    # Recorrer genes del individuo
     for i in range(len(individuo)):
+
+        # Cambiar gen según probabilidad
         if random.random() < prob:
             individuo[i] = 1 - individuo[i]
-        return individuo
-    
+
+    return individuo
+
+
+# Seleccionar mejores individuos
 def seleccion(poblacion):
+
+    # Ordenar por fitness
     poblacion.sort(key=fitness, reverse=True)
-    return poblacion [:2]
 
-def algoritmo_generico(tamano=5, poblacion_size=6, generacion=10):
-    poblacion = [crear_individuo(tamano) for _ in range(poblacion_size)]
+    # Retornar los 2 mejores
+    return poblacion[:2]
 
+
+# Algoritmo genético
+def algoritmo_genetico(tamano=5, poblacion_size=6, generacion=10):
+
+    # Crear población inicial
+    poblacion = [
+        crear_individuo(tamano)
+        for _ in range(poblacion_size)
+    ]
+
+    # Ejecutar generaciones
     for _ in range(generacion):
+
+        # Seleccionar padres
         padres = seleccion(poblacion)
 
+        # Crear nueva población
         nueva_poblacion = padres.copy()
 
+        # Generar hijos
         while len(nueva_poblacion) < poblacion_size:
-            hijo = cruce(random.choice(padres), random.choice(padres))
-            hijo = mutuacion(hijo)
+
+            hijo = cruce(
+                random.choice(padres),
+                random.choice(padres)
+            )
+
+            # Aplicar mutación
+            hijo = mutacion(hijo)
+
             nueva_poblacion.append(hijo)
 
+        # Actualizar población
         poblacion = nueva_poblacion
 
+    # Obtener mejor individuo
     mejor = max(poblacion, key=fitness)
+
     return mejor, fitness(mejor)
 
+
+# Pedir datos al usuario
 tamano = int(input("Tamaño del individuo: "))
-generacion = int(input("Número de generación: "))
+generacion = int(input("Número de generaciones: "))
 
-mejor, valor = algoritmo_generico(tamano, generacion=generacion)
+# Ejecutar algoritmo genético
+mejor, valor = algoritmo_genetico(
+    tamano,
+    generacion=generacion
+)
 
-
-print("Mejor individuo: ", mejor)
-print("Fitness: ", valor)
+# Mostrar resultados
+print("Mejor individuo:", mejor)
+print("Fitness:", valor)

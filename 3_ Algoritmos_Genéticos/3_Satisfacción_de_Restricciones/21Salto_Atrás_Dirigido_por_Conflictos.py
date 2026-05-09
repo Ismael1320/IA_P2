@@ -1,60 +1,93 @@
+# Backjumping dirigido por conflictos
 def cbj(grafo, colores):
-    asignacion = {}
-    conflictos = {nodo: set() for nodo in grafo}
 
+    # Guardar asignaciones de colores
+    asignacion = {}
+
+    # Guardar conflictos de cada nodo
+    conflictos = {
+        nodo: set()
+        for nodo in grafo
+    }
+
+    # Verificar si un color es válido
     def es_valido(nodo, color):
+
         for vecino in grafo[nodo]:
+
+            # Verificar conflicto de color
             if vecino in asignacion and asignacion[vecino] == color:
                 return False, vecino
+
         return True, None
-    
-    def reslover(nodos, i=0):
+
+    # Función recursiva de búsqueda
+    def resolver(nodos, i=0):
+
+        # Verificar si todos los nodos fueron asignados
         if i == len(nodos):
-            return True 
-        
+            return True
+
+        # Obtener nodo actual
         nodo = nodos[i]
 
+        # Probar colores disponibles
         for color in colores:
-            valido, conflictos =  es_valido(nodo, color)
 
+            valido, conflicto = es_valido(nodo, color)
+
+            # Asignar color si es válido
             if valido:
-                asignacion[nodo] = color
-            
-            if reslover(nodos, i + 1):
-                return True
-            
-            del asignacion[nodo]
-        else:
-            conflictos[nodo].add(conflictos)
 
-        if conflictos[nodo]:
-            salto = max(conflictos[nodo], key=lambda x: nodos.index(x))
-            return False
-        
+                asignacion[nodo] = color
+
+                # Llamada recursiva
+                if resolver(nodos, i + 1):
+                    return True
+
+                # Retroceder si no funciona
+                del asignacion[nodo]
+
+            else:
+                # Guardar conflicto encontrado
+                conflictos[nodo].add(conflicto)
+
         return False
-    
+
+    # Lista de nodos
     nodos = list(grafo.keys())
-    reslover(nodos)
+
+    # Ejecutar algoritmo CBJ
+    resolver(nodos)
 
     return asignacion
 
+
+# Grafo representado como diccionario
 grafo = {
-    'A': ['B','C'],
+    'A': ['B', 'C'],
     'B': ['A', 'C', 'D'],
     'C': ['A', 'B', 'D'],
     'D': ['B', 'C'],
 }
 
+# Colores disponibles
 colores = ['Rojo', 'Verde', 'Azul']
 
-print("Nodos: ", list(grafo.keys()))
-print("Colores: ", list(colores))
+# Mostrar información
+print("Nodos:", list(grafo.keys()))
+print("Colores:", colores)
 
+# Ejecutar CBJ
 resultado = cbj(grafo, colores)
 
+# Mostrar resultado
 if resultado:
-        print("Asignación válida: ")
-        for nodo, color in resultado.items():
-            print(nodo, " -> ", color)
+
+    print("Asignación válida:")
+
+    for nodo, color in resultado.items():
+        print(nodo, "->", color)
+
 else:
-        print("No hay camino")
+    print("No hay solución")
